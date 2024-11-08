@@ -1,0 +1,82 @@
+---
+import { languageStore } from '../store/language';
+
+const currentLanguage = languageStore.getLanguage();
+---
+
+<div class="lang-switch">
+  <select id="languageSelect" aria-label="Select language">
+    <option value="es" selected={currentLanguage === 'es'}>Español</option>
+    <option value="en" selected={currentLanguage === 'en'}>English</option>
+  </select>
+</div>
+
+<style>
+  .lang-switch {
+    position: relative;
+  }
+
+  select {
+    appearance: none;
+    background-color: transparent;
+    border: 1px solid var(--text);
+    color: var(--text);
+    cursor: pointer;
+    padding: 0.4rem 2rem 0.4rem 0.8rem;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+  }
+
+  .lang-switch::after {
+    content: "▼";
+    font-size: 0.8rem;
+    position: absolute;
+    right: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--text);
+  }
+
+  select:hover {
+    background-color: var(--hover-bg);
+  }
+
+  select:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  /* Style for dark mode */
+  :global(.dark) select {
+    background-color: transparent;
+  }
+
+  /* Remove default styles for Firefox */
+  select {
+    -moz-appearance: none;
+  }
+
+  /* Remove default styles for IE */
+  select::-ms-expand {
+    display: none;
+  }
+</style>
+
+<script>
+  const select = document.getElementById('languageSelect') as HTMLSelectElement;
+  
+  if (select) {
+    select.addEventListener('change', () => {
+      const newLang = select.value;
+      
+      // Update localStorage
+      localStorage.setItem('language', newLang);
+      
+      // Reload the page to apply changes
+      window.location.reload();
+    });
+  }
+</script>

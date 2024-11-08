@@ -1,0 +1,75 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+import LanguageSwitch from './LanguageSwitch.astro';
+import { languageStore } from '../store/language';
+import { translations } from '../i18n/translations';
+
+const lang = languageStore.getLanguage();
+const t = translations[lang];
+---
+
+<nav class="nav-container">
+  <div class="nav-content">
+    <a href="/" class="site-title">My Portfolio</a>
+    <div class="nav-links">
+      <a href="/">{t.nav.home}</a>
+      <a href="/about">{t.nav.about}</a>
+      <a href="/gallery">{t.nav.gallery}</a>
+      <a href="/contact">{t.nav.contact}</a>
+      <LanguageSwitch />
+      <ThemeToggle />
+    </div>
+  </div>
+</nav>
+
+<style>
+  .nav-container {
+    background-color: var(--nav-bg);
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .site-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: var(--accent);
+  }
+
+  @media (max-width: 768px) {
+    .nav-content {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .nav-links {
+      gap: 1rem;
+    }
+  }
+</style>

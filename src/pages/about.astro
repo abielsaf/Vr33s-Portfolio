@@ -1,0 +1,84 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { languageStore } from '../store/language';
+import { translations } from '../i18n/translations';
+
+const lang = languageStore.getLanguage();
+const t = translations[lang];
+---
+
+<Layout title={`${t.about.title} | My Portfolio`}>
+  <main>
+    <h1>{t.about.title}</h1>
+    <div class="about-content">
+      <img src="https://via.placeholder.com/200" alt="Profile picture" class="profile-pic" />
+      <div class="bio">
+        <p>{t.about.bio1}</p>
+        <p>{t.about.bio2}</p>
+        <h2>{t.about.skills}</h2>
+        <ul>
+          <li>Skill 1</li>
+          <li>Skill 2</li>
+          <li>Skill 3</li>
+          <li>Skill 4</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .about-content {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .profile-pic {
+    width: 100%;
+    border-radius: 10px;
+  }
+
+  .bio {
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+
+  li {
+    padding: 0.5rem 1rem;
+    background-color: var(--nav-bg);
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .about-content {
+      grid-template-columns: 1fr;
+    }
+
+    .profile-pic {
+      max-width: 300px;
+      margin: 0 auto;
+    }
+  }
+</style>

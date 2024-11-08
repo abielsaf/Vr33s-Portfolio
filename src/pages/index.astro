@@ -1,16 +1,58 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import { languageStore } from '../store/language';
+import { translations } from '../i18n/translations';
 
+const lang = languageStore.getLanguage();
+const t = translations[lang];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Home | My Portfolio">
+  <main>
+    <h1>{t.home.welcome}</h1>
+    <p>{t.home.intro}</p>
+    <div class="cta-buttons">
+      <a href="/about" class="btn">{t.home.aboutButton}</a>
+      <a href="/gallery" class="btn">{t.home.galleryButton}</a>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    background-color: var(--accent);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: opacity 0.2s;
+  }
+
+  .btn:hover {
+    opacity: 0.9;
+  }
+</style>
