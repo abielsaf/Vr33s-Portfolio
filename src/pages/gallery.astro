@@ -2,95 +2,135 @@
 import Layout from '../layouts/Layout.astro';
 import { languageStore } from '../store/language';
 import { translations } from '../i18n/translations';
+import { getCollection } from 'astro:content';
+import { CldImage } from 'astro-cloudinary';
 
 const lang = languageStore.getLanguage();
 const t = translations[lang];
-import Cat1 from '../images/Cat1.jpg';
-import Comic1 from '../images/Comic1.jpg';
-import Comic2 from '../images/Comic2.jpg';
-import Others1 from '../images/Others1.jpg';
-import Others2 from '../images/Others2.jpg';
-import Others3 from '../images/Others3.jpg';
+const test1 = await getCollection('test1');
+const all = await getCollection('all');
 
-const images = [
-  { src: Cat1, title: "Project 1" },
-  { src: Comic1, title: "Project 2" },
-  { src: Comic2, title: "Project 3" },
-  { src: Others1, title: "Project 4" },
-  { src: Others2, title: "Project 5" },
-  { src: Others3, title: "Project 6" },
-];
 ---
+
 
 <Layout title={`${t.gallery.title} | Vr33s`}>
   <main>
     <h1>{t.gallery.title}</h1>
-    <div class="gallery">
-      {images.map((image) => (
-        <div class="gallery-item">
-          <img src={image.src} alt={image.title} loading="lazy" />
-          <div class="overlay">
-            <h3>{image.title}</h3>
-          </div>
-        </div>
-      ))}
+    <h2>Test1</h2>
+    <div id="Test1">
+      <ul class="gallery">{test1.map(({ data: resource }) => {
+        return (
+          <li class="gallery-item">
+            <CldImage
+             src={resource.public_id} 
+             width={resource.width}
+             height={resource.height}
+             alt=""/>
+          </li>   
+        )
+      })}</ul>
+    </div>
+    <h2>Todas</h2>
+    <div id="Todas">
+      <ul class="gallery">{all.map(({ data: resource }) => {
+        return (
+          <li class="gallery-item">
+            <CldImage
+             src={resource.public_id} 
+             width={resource.width}
+             height={resource.height}
+             alt=""/>
+          </li>   
+        )
+      })}</ul>  
     </div>
   </main>
 </Layout>
 
 <style>
-  main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-  }
+ main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
 
-  h1 {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
+h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
 
+.gallery {
+  display: grid; /* Use grid layout */
+  grid-template-columns: repeat(4, 1fr); /* 4 items per row */
+  gap: 1rem; /* Space between items */
+  margin-bottom: 3rem; /* Space between galleries */
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 1rem;
+  transform: translateY(100%);
+  transition: transform 0.3s;
+}
+
+.gallery-item:hover .overlay {
+  transform: translateY(0);
+}
+
+h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+/* Make sure images are responsive */
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+@media (max-width: 1200px) {
   .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(3, 1fr); /* 3 items per row */
   }
+}
 
-  .gallery-item {
-    position: relative;
-    overflow: hidden;
-    border-radius: 10px;
+@media (max-width: 800px) {
+  .gallery {
+    grid-template-columns: repeat(2, 1fr); /* 2 items per row */
   }
+}
 
-  .gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s;
+@media (max-width: 500px) {
+  .gallery {
+    grid-template-columns: 1fr; /* 1 item per row */
   }
+}
 
-  .overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 1rem;
-    transform: translateY(100%);
-    transition: transform 0.3s;
-  }
-
-  .gallery-item:hover img {
-    transform: scale(1.1);
-  }
-
-  .gallery-item:hover .overlay {
-    transform: translateY(0);
-  }
-
-  h3 {
-    margin: 0;
-    font-size: 1.2rem;
-  }
 </style>
+
+<script type="module">
+  import PhotoSwipeLightbox from 'photoswipe/dist/photoswipe-lightbox.esm.js';
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: '#Test1',
+    children: 'a',
+    pswpModule: () => import('photoswipe/dist/photoswipe.esm.js')
+  });
+  lightbox.init();
+  </script>
+  <link rel="stylesheet" href="photoswipe/dist/photoswipe.css">
