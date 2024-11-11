@@ -14,5 +14,9 @@
     "astro": "^4.15.3",
     "astro-navbar": "^2.3.6",
     "astro-theme-toggle": "^0.3.5"
+  },
+  "devDependencies": {
+    "@astrojs/image": "^0.18.0",
+    "sharp": "^0.33.5"
   }
 }
