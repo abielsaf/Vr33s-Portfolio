@@ -13,8 +13,7 @@
   "dependencies": {
     "astro": "^4.15.3",
     "astro-cloudinary": "^1.3.0",
-    "astro-theme-toggle": "^0.3.5",
-    "photoswipe": "^5.4.4"
+    "astro-theme-toggle": "^0.3.5"
   },
   "devDependencies": {
     "sharp": "^0.33.5"

@@ -17,7 +17,7 @@ const all = await getCollection('all');
   <main>
     <h1>{t.gallery.title}</h1>
     <h2>Test1</h2>
-    <div id="Test1">
+    <div>
       <ul class="gallery">{test1.map(({ data: resource }) => {
         return (
           <li class="gallery-item">
@@ -31,7 +31,7 @@ const all = await getCollection('all');
       })}</ul>
     </div>
     <h2>Todas</h2>
-    <div id="Todas">
+    <div>
       <ul class="gallery">{all.map(({ data: resource }) => {
         return (
           <li class="gallery-item">
@@ -124,13 +124,3 @@ h3 {
 
 </style>
 
-<script type="module">
-  import PhotoSwipeLightbox from 'photoswipe/dist/photoswipe-lightbox.esm.js';
-  const lightbox = new PhotoSwipeLightbox({
-    gallery: '#Test1',
-    children: 'a',
-    pswpModule: () => import('photoswipe/dist/photoswipe.esm.js')
-  });
-  lightbox.init();
-  </script>
-  <link rel="stylesheet" href="photoswipe/dist/photoswipe.css">
