@@ -7,10 +7,11 @@ export const translations = {
       contact: 'Contact'
     },
     home: {
+      title: 'Home',
       welcome: 'Welcome to My Portfolio',
       intro: "Hi! I'm a creative professional passionate about my work.",
       aboutButton: 'About Me',
-      galleryButton: 'View Gallery'
+      galleryButton: 'View Galleries'
     },
     about: {
       title: 'About Me',
@@ -43,6 +44,7 @@ export const translations = {
       contact: 'Contacto'
     },
     home: {
+      title: 'Inicio',
       welcome: 'Bienvenido a Mi Portafolio',
       intro: "¡Hola! Soy un profesional creativo apasionado por mi trabajo.",
       aboutButton: 'Sobre Mí',
@@ -58,7 +60,7 @@ export const translations = {
       title: 'Galerías de Fotos'
     },
     contact: {
-      title: 'Contáctame',
+      title: 'Contacto',
       getInTouch: 'Ponte en Contacto',
       reachOut: 'No dudes en contactarme para cualquier consulta u oportunidad de colaboración.',
       email: 'Correo',
