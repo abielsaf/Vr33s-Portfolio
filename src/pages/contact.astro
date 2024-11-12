@@ -5,7 +5,11 @@ import { translations } from '../i18n/translations';
 
 const lang = languageStore.getLanguage();
 const t = translations[lang];
+
+const apiKey = import.meta.env.WEB3FORMS_ACCESS_KEY;
+
 ---
+
 
 <Layout title={`${t.contact.title} | Vr33s`}>
   <main>
@@ -25,27 +29,35 @@ const t = translations[lang];
           </div>
         </div>
       </div>
-      <form class="contact-form">
+      
+      <!-- Web3Forms Contact Form -->
+      <form id="form" class="contact-form" method="POST">
+        <input type="hidden" name="access_key" value={apiKey} />
+
         <div class="form-group">
           <label for="name">{t.contact.form.name}</label>
           <input type="text" id="name" name="name" required />
         </div>
+        
         <div class="form-group">
           <label for="email">{t.contact.form.email}</label>
           <input type="email" id="email" name="email" required />
         </div>
+        
         <div class="form-group">
           <label for="message">{t.contact.form.message}</label>
           <textarea id="message" name="message" rows="5" required></textarea>
         </div>
+        
         <button type="submit" class="submit-btn">{t.contact.form.send}</button>
+        <div id="result" class="form-result"></div>
       </form>
     </div>
   </main>
 </Layout>
 
 <style>
-  main {
+    main {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
@@ -125,3 +137,47 @@ const t = translations[lang];
     }
   }
 </style>
+
+<script is:inline>
+  const form = document.getElementById('form');
+  const result = document.getElementById('result');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(form);
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
+
+    result.innerHTML = "Please wait...";
+
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: json
+    })
+    .then(async (response) => {
+      const jsonResponse = await response.json();
+      if (response.ok) {
+        result.innerHTML = jsonResponse.message;
+      } else {
+        console.error(response);
+        result.innerHTML = "Error: " + jsonResponse.message;
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      result.innerHTML = "Something went wrong!";
+    })
+    .finally(() => {
+      form.reset();
+      setTimeout(() => {
+        result.style.display = "none";
+      }, 3000);
+    });
+  });
+</script>
+
