@@ -10,7 +10,10 @@ const t = translations[lang];
 
 <nav class="nav-container">
   <div class="nav-content">
-    <a href="/" class="site-title">Víctor Casabella</a>
+    <a href="/" class="site-title">
+      <img id="logo" src="/public/V3redondo.png" alt="Víctor Casabella Logo" class="logo" />
+      <>Víctor Casabella</>
+    </a>
     <button class="mobile-menu-toggle" aria-label="Toggle Menu">
       <span class="bar"></span>
       <span class="bar"></span>
@@ -45,10 +48,16 @@ const t = translations[lang];
   }
 
   .site-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--text);
-    text-decoration: none;
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Vertically center the logo and text */
+    gap: 10px; /* Space between the logo and text */
+    text-decoration: none; /* Remove underline from the link */
+    color: var(--text); /* Set the text color to the default text color */
+  }
+
+  .logo {
+    width: 50px; /* Default logo size */
+    height: auto;
   }
 
   .nav-links {
@@ -89,9 +98,14 @@ const t = translations[lang];
 
   @media (max-width: 768px) {
     .nav-content {
-      flex-direction: row; /* Keep items in a row */
-      justify-content: space-between; /* Space items out */
-      align-items: center; /* Center items vertically */
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      width: 40px; /* Smaller logo size for smaller screens */
+      height: auto;
     }
 
     .nav-links {
@@ -122,6 +136,7 @@ const t = translations[lang];
   }
 </style>
 
+
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const toggleButton = document.querySelector('.mobile-menu-toggle');
@@ -138,5 +153,28 @@ const t = translations[lang];
         navLinks.classList.remove('active');
       }
     });
+  });
+</script>
+
+<script>
+  // Function to update the logo based on the current theme
+  function updateLogo() {
+    const logo = document.getElementById('logo');
+    const isDarkMode = document.documentElement.classList.contains('dark'); // Check if 'dark' class is active
+
+    if (isDarkMode) {
+      logo.src = '/V3redondo.png'; // Light logo for dark theme
+    } else {
+      logo.src = '/V3redondo-negro.png'; // Dark logo for light theme
+    }
+  }
+
+  // Initial call on page load
+  document.addEventListener('DOMContentLoaded', updateLogo);
+
+  // Re-run the update function when the theme toggle button is clicked
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    // Delay the function to allow time for the class toggle to apply
+    setTimeout(updateLogo, 10);
   });
 </script>
