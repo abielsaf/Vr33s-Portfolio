@@ -1,5 +1,6 @@
 ---
 import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
 import { languageStore } from '../store/language';
 import { ThemeScript } from 'astro-theme-toggle';
 
@@ -24,7 +25,10 @@ const currentLanguage = languageStore.getLanguage();
   </head>
   <body>
     <Navbar />
-    <slot />
+    <main>
+      <slot />
+    </main>
+    <Footer />
   </body>
 </html>
 

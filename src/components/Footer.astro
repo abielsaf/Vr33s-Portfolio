@@ -1,0 +1,100 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer-container">
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="https://www.instagram.com/vr33s/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <!-- Instagram SVG Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" class="icon">
+            <path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.3 2.3.5.6.3 1.1.6 1.6 1.1.5.5.8 1 .9 1.6.2.5.4 1 .5 2.3.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.3 1.8-.5 2.3-.3.6-.6 1.1-1.1 1.6-.5.5-1 .8-1.6.9-.5.2-1 .4-2.3.5-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.3-2.3-.5-.6-.3-1.1-.6-1.6-1.1-.5-.5-.8-1-.9-1.6-.2-.5-.4-1-.5-2.3-.1-1.2-.1-1.6-.1-4.8s0-3.6.1-4.8c.1-1.2.3-1.8.5-2.3.3-.6.6-1.1 1.1-1.6.5-.5 1-.8 1.6-.9.5-.2 1-.4 2.3-.5 1.2-.1 1.6-.1 4.8-.1zm0-2.2C8.7 0 8.3 0 7.1.1c-1.2.1-2 .3-2.7.6-.7.3-1.3.6-1.9 1.2-.6.6-.9 1.2-1.2 1.9-.3.7-.5 1.5-.6 2.7C.2 8.3.2 8.7.2 12s0 3.7.1 4.9c.1 1.2.3 2 .6 2.7.3.7.6 1.3 1.2 1.9.6.6 1.2.9 1.9 1.2.7.3 1.5.5 2.7.6 1.2.1 1.6.1 4.9.1s3.7 0 4.9-.1c1.2-.1 2-.3 2.7-.6.7-.3 1.3-.6 1.9-1.2.6-.6.9-1.2 1.2-1.9.3-.7.5-1.5.6-2.7.1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.1-1.2-.3-2-.6-2.7-.3-.7-.6-1.3-1.2-1.9-.6-.6-1.2-.9-1.9-1.2-.7-.3-1.5-.5-2.7-.6C15.7.2 15.3.2 12 .2zm0 5.8a6 6 0 1 0 0 12.1A6 6 0 0 0 12 6zm0 9.8a3.8 3.8 0 1 1 0-7.6 3.8 3.8 0 0 1 0 7.6zm6.6-10.5a1.4 1.4 0 1 0 0-2.8 1.4 1.4 0 0 0 0 2.8z"/>
+          </svg>
+        </a>
+        <a href="">Stock fotos?</a>
+        <a href="">PTE</a>
+        <a href="">PTE</a>
+        <a href="">PTE</a>
+      </div>
+      <span class="footer-divider">|</span>
+      <p class="footer-copyright">
+        &copy; {new Date().getFullYear()} Víctor Casabella. All Rights Reserved.
+      </p>
+    </div>
+  </footer>
+  
+
+<style>
+  /* Ensure full height and sticky footer */
+  :global(body) {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+  }
+
+  :global(main) {
+    flex: 1;
+  }
+
+  /* Footer container styling */
+  .footer-container {
+    background-color: var(--nav-bg);
+    padding: 0.5rem 1rem; /* Reduced padding */
+    color: var(--text);
+    text-align: center;
+    border-top: 1px solid var(--hover-bg); /* Optional border */
+    flex-shrink: 0;
+  }
+
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem; /* Space between links and copyright */
+    flex-wrap: wrap; /* Wrap content on smaller screens */
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .footer-links a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.75rem; /* Smaller font size for compact look */
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover {
+    color: var(--accent);
+  }
+
+  .footer-divider {
+    color: var(--text);
+    font-size: 0.75rem;
+  }
+
+  .footer-copyright {
+    font-size: 0.75rem;
+    color: var(--text);
+  }
+  .icon {
+        fill: currentColor; /* Inherit color from parent */
+    }
+
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .footer-content {
+      flex-direction: column; /* Stack items on smaller screens */
+      gap: 0.5rem;
+    }
+
+    .footer-links {
+      gap: 0.5rem;
+    }
+  }
+</style>
