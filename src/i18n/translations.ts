@@ -27,7 +27,7 @@ export const translations = {
       getInTouch: 'Get in Touch',
       reachOut: 'Feel free to reach out to me for any inquiries filling this form.',
       email: 'Email',
-      phone: 'Phone',
+      phone: 'WhatsApp',
       prefer:'If you prefer it, you can contact me directly on my Whatsapp or email', 
       form: {
         name: 'Name',
@@ -65,7 +65,7 @@ export const translations = {
       getInTouch: '¿Quieres contactar conmigo?',
       reachOut: 'No dudes en contactarme para cualquier consulta rellenando el formulario.',
       email: 'Correo',
-      phone: 'Tlf',
+      phone: 'WhatsApp',
       prefer:'Si lo prefieres, puedes contactar directamente en mi Whatsapp o mail.', 
       form: {
         name: 'Nombre',
