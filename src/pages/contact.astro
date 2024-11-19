@@ -18,14 +18,14 @@ const apiKey = import.meta.env.WEB3FORMS_ACCESS_KEY;
       <div class="contact-info">
         <h2>{t.contact.getInTouch}</h2>
         <p>{t.contact.reachOut}</p>
+        <p>{t.contact.prefer}</p>
         <div class="contact-details">
           <div class="detail">
             <strong>{t.contact.email}:</strong>
-            <a href="mailto:your.email@example.com">your.email@example.com</a>
+            <a href="mailto:vr33s.photo@gmail.com">vr33s.photo@gmail.com</a>
           </div>
           <div class="detail">
-            <strong>{t.contact.location}:</strong>
-            <span>Your City, Country</span>
+            <strong>{t.contact.phone}:</strong> +34 602 69 65 24
           </div>
         </div>
       </div>
@@ -33,7 +33,10 @@ const apiKey = import.meta.env.WEB3FORMS_ACCESS_KEY;
       <!-- Web3Forms Contact Form -->
       <form id="form" class="contact-form" method="POST">
         <input type="hidden" name="access_key" value={apiKey} />
-
+        <input type="hidden" name="from_name" value="Potencial cliente">
+        <input type="hidden" name="subject" value="Nuevo correo de Vr33s.photo (O como se llame la web)">
+        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+        
         <div class="form-group">
           <label for="name">{t.contact.form.name}</label>
           <input type="text" id="name" name="name" required />
@@ -48,7 +51,7 @@ const apiKey = import.meta.env.WEB3FORMS_ACCESS_KEY;
           <label for="message">{t.contact.form.message}</label>
           <textarea id="message" name="message" rows="5" required></textarea>
         </div>
-        
+       <!--  <div class="h-captcha" data-captcha="true"></div> hCaptcha, necesita script-->
         <button type="submit" class="submit-btn">{t.contact.form.send}</button>
         <div id="result" class="form-result"></div>
       </form>
@@ -181,3 +184,5 @@ const apiKey = import.meta.env.WEB3FORMS_ACCESS_KEY;
   });
 </script>
 
+<!-- <script src="https://web3forms.com/client/script.js" async defer></script>
+-->
