@@ -1,6 +1,6 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
-import LanguageSwitch from './LanguageSwitch.astro';
+/* import LanguageSwitch from './LanguageSwitch.astro'; */
 import { languageStore } from '../store/language';
 import { translations } from '../i18n/translations';
 
@@ -48,15 +48,15 @@ const t = translations[lang];
   }
 
   .site-title {
-    display: flex; /* Use flexbox for alignment */
-    align-items: center; /* Vertically center the logo and text */
-    gap: 10px; /* Space between the logo and text */
-    text-decoration: none; /* Remove underline from the link */
-    color: var(--text); /* Set the text color to the default text color */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--text);
   }
 
   .logo {
-    width: 50px; /* Default logo size */
+    width: 50px;
     height: auto;
   }
 
@@ -80,13 +80,14 @@ const t = translations[lang];
   .mobile-menu-toggle {
     display: none; /* Hidden by default */
     flex-direction: column;
-    justify-content: center; /* Center vertically */
-    align-items: center; /* Center horizontally */
+    justify-content: center;
+    align-items: center;
     width: 30px;
     height: 30px;
     background: transparent;
     border: none;
     cursor: pointer;
+    transition: transform 0.3s ease; /* Smooth transformation */
   }
 
   .bar {
@@ -94,48 +95,59 @@ const t = translations[lang];
     width: 100%;
     background-color: var(--text);
     transition: 0.3s;
+    margin: 4px 0;  /* Adds vertical space between each bar */
+  }
+
+  /* Mobile Menu Button Active State */
+  .mobile-menu-toggle.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .mobile-menu-toggle.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-menu-toggle.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
   }
 
   @media (max-width: 768px) {
     .nav-content {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
     }
 
     .logo {
       width: 40px; /* Smaller logo size for smaller screens */
-      height: auto;
     }
 
     .nav-links {
-      display: none; /* Hide links by default */
+      display: none;
       flex-direction: column;
       gap: 1rem;
-      position: absolute; /* Position dropdown absolutely */
-      right: 0; /* Align to the right */
-      background-color: var(--nav-bg); /* Match background */
-      padding: 1rem; /* Optional padding for dropdown */
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional shadow for dropdown */
-      width: 200px; /* Set a width for dropdown */
-      z-index: 50; /* Ensure dropdown is above other elements */
-      top: 100%; /* Position the dropdown below the toggle button */
-      /* Optional: Set max-height and overflow for better UX */
-      max-height: 300px; /* Limit height */
-      overflow-y: auto; /* Scroll if too many items */
+      position: absolute;
+      right: 0;
+      background-color: var(--nav-bg);
+      padding: 1rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 200px;
+      z-index: 50;
+      top: 100%;
+      max-height: 300px;
+      overflow-y: auto;
     }
 
     .nav-links.active {
-      display: flex; /* Show links when active */
+      display: flex;
     }
 
     .mobile-menu-toggle {
-      display: flex; /* Show mobile menu toggle */
-      margin-left: auto; /* Push toggle to the right */
+      display: flex;
+      margin-left: auto;
     }
   }
 </style>
-
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -144,13 +156,15 @@ const t = translations[lang];
 
     // Toggle dropdown on button click
     toggleButton.addEventListener('click', () => {
-      navLinks.classList.toggle('active');
+      toggleButton.classList.toggle('active'); // Toggle active class on the button
+      navLinks.classList.toggle('active');      // Toggle active class on the menu
     });
 
     // Close dropdown when clicking outside
     document.addEventListener('click', (event) => {
       if (!toggleButton.contains(event.target) && !navLinks.contains(event.target)) {
         navLinks.classList.remove('active');
+        toggleButton.classList.remove('active');
       }
     });
   });
@@ -160,7 +174,7 @@ const t = translations[lang];
   // Function to update the logo based on the current theme
   function updateLogo() {
     const logo = document.getElementById('logo');
-    const isDarkMode = document.documentElement.classList.contains('dark'); // Check if 'dark' class is active
+    const isDarkMode = document.documentElement.classList.contains('dark'); 
 
     if (isDarkMode) {
       logo.src = '/V3redondo.png'; // Light logo for dark theme
@@ -174,7 +188,6 @@ const t = translations[lang];
 
   // Re-run the update function when the theme toggle button is clicked
   document.getElementById('theme-toggle').addEventListener('click', () => {
-    // Delay the function to allow time for the class toggle to apply
     setTimeout(updateLogo, 10);
   });
 </script>
