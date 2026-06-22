@@ -1,0 +1,60 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { getLang, getTranslations } from '../../i18n/utils';
+
+const lang = getLang(Astro.currentLocale);
+const t = getTranslations(Astro.currentLocale);
+const aboutHref = getRelativeLocaleUrl(lang, '/about');
+const galleryHref = getRelativeLocaleUrl(lang, '/gallery');
+---
+
+<Layout title={`${t.home.title} | Vr33s`}>
+  <main>
+    <h1>{t.home.welcome}</h1>
+    <p>{t.home.intro}</p>
+    <div class="cta-buttons">
+      <a href={aboutHref} class="btn">{t.home.aboutButton}</a>
+      <a href={galleryHref} class="btn">{t.home.galleryButton}</a>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    background-color: var(--accent);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: opacity 0.2s;
+  }
+
+  .btn:hover {
+    opacity: 0.9;
+  }
+</style>

@@ -1,0 +1,129 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { getLang } from '../i18n/utils';
+import FlagIcon from './FlagIcon.astro';
+
+const currentLang = getLang(Astro.currentLocale);
+const pathWithoutLocale = currentLang === 'en'
+  ? Astro.url.pathname.replace(/^\/en/, '') || '/'
+  : Astro.url.pathname;
+
+const languages: { code: 'es' | 'en'; label: string }[] = [
+  { code: 'es', label: 'Español' },
+  { code: 'en', label: 'English' }
+];
+---
+
+<div class="lang-dropdown">
+  <button
+    id="lang-dropdown-toggle"
+    class="lang-dropdown-toggle"
+    type="button"
+    aria-haspopup="true"
+    aria-expanded="false"
+    aria-label="Select language"
+  >
+    <FlagIcon code={currentLang} />
+    <span class="chevron">▾</span>
+  </button>
+  <ul id="lang-dropdown-menu" class="lang-dropdown-menu">
+    {languages.map((lang) => (
+      <li>
+        <a
+          href={getRelativeLocaleUrl(lang.code, pathWithoutLocale)}
+          class:list={['lang-option', { active: lang.code === currentLang }]}
+        >
+          <FlagIcon code={lang.code} />
+          <span>{lang.label}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .lang-dropdown {
+    position: relative;
+  }
+
+  .lang-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: transparent;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+    padding: 0.4rem 0.6rem;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+  }
+
+  .lang-dropdown-toggle:hover {
+    background-color: var(--hover-bg);
+  }
+
+  .chevron {
+    font-size: 0.7rem;
+  }
+
+  .lang-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    right: 0;
+    background-color: var(--nav-bg);
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    padding: 0.4rem;
+    min-width: 140px;
+    z-index: 200;
+  }
+
+  .lang-dropdown-menu.open {
+    display: block;
+  }
+
+  .lang-option {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: 5px;
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .lang-option:hover {
+    background-color: var(--hover-bg);
+  }
+
+  .lang-option.active {
+    font-weight: bold;
+  }
+</style>
+
+<script>
+  function setupLangDropdown() {
+    const toggle = document.getElementById('lang-dropdown-toggle');
+    const menu = document.getElementById('lang-dropdown-menu');
+    if (!toggle || !menu) return;
+
+    toggle.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const isOpen = menu.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!toggle.contains(event.target as Node) && !menu.contains(event.target as Node)) {
+        menu.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  setupLangDropdown();
+  document.addEventListener('astro:after-swap', setupLangDropdown);
+</script>

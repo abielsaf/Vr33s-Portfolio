@@ -1,0 +1,31 @@
+---
+interface Props {
+  code: 'es' | 'en';
+}
+
+const { code } = Astro.props;
+---
+
+{code === 'es' ? (
+  <svg class="flag-icon" viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Español">
+    <rect width="3" height="2" fill="#AA151B" />
+    <rect y="0.5" width="3" height="1" fill="#F1BF00" />
+  </svg>
+) : (
+  <svg class="flag-icon" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="English">
+    <rect width="60" height="40" fill="#00247d" />
+    <path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="6" />
+    <path d="M0,0 L60,40 M60,0 L0,40" stroke="#cf142b" stroke-width="2" />
+    <path d="M30,0 V40 M0,20 H60" stroke="#fff" stroke-width="10" />
+    <path d="M30,0 V40 M0,20 H60" stroke="#cf142b" stroke-width="6" />
+  </svg>
+)}
+
+<style>
+  .flag-icon {
+    width: 1.4rem;
+    height: auto;
+    border-radius: 2px;
+    display: block;
+  }
+</style>

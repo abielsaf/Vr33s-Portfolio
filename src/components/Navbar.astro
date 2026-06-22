@@ -1,16 +1,21 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
-/* import LanguageSwitch from './LanguageSwitch.astro'; */
-import { languageStore } from '../store/language';
-import { translations } from '../i18n/translations';
+import LangToggle from './LangToggle.astro';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { getLang, getTranslations } from '../i18n/utils';
 
-const lang = languageStore.getLanguage();
-const t = translations[lang];
+const lang = getLang(Astro.currentLocale);
+const t = getTranslations(Astro.currentLocale);
+
+const homeHref = getRelativeLocaleUrl(lang, '/');
+const aboutHref = getRelativeLocaleUrl(lang, '/about');
+const galleryHref = getRelativeLocaleUrl(lang, '/gallery');
+const contactHref = getRelativeLocaleUrl(lang, '/contact');
 ---
 
 <nav class="nav-container">
   <div class="nav-content">
-    <a href="/" class="site-title">
+    <a href={homeHref} class="site-title">
       <img id="logo" src="/V3redondo.png" alt="Víctor Casabella Logo" class="logo" />
       <>Víctor Casabella</>
     </a>
@@ -20,11 +25,11 @@ const t = translations[lang];
       <span class="bar"></span>
     </button>
     <div class="nav-links">
-      <a href="/">{t.nav.home}</a>
-      <a href="/about">{t.nav.about}</a>
-      <a href="/gallery">{t.nav.gallery}</a>
-      <a href="/contact">{t.nav.contact}</a>
-    <!--   <LanguageSwitch /> -->
+      <a href={homeHref}>{t.nav.home}</a>
+      <a href={aboutHref}>{t.nav.about}</a>
+      <a href={galleryHref}>{t.nav.gallery}</a>
+      <a href={contactHref}>{t.nav.contact}</a>
+      <LangToggle />
       <ThemeToggle />
     </div>
   </div>
