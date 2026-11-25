@@ -15,8 +15,10 @@
 
 ## Launch
 
-- [ ] Merge `redesign` into `main`.
-- [ ] Create the Vercel project. Set `PUBLIC_CLOUDINARY_CLOUD_NAME`, `PUBLIC_CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` and `WEB3FORMS_ACCESS_KEY` for Production and Preview.
+- [x] Merge `redesign` into `main` (old site kept on `old-version`).
+- [x] Create the Vercel project with the Cloudinary env vars.
+- [ ] Add `WEB3FORMS_ACCESS_KEY` in Vercel (Production and Preview), then redeploy.
+- [ ] **Mobile check** on a real phone: every page, the navbar dropdown menu (open/close, links, language and theme toggles), gallery viewer swipe.
 - [ ] Custom domain (if any).
 - [ ] Link previews: once the domain is known, set `site` in `astro.config.mjs` and add `og:url`. Test a shared link on WhatsApp.
 
@@ -30,3 +32,7 @@ Photos load at build time, so changes in Cloudinary need a rebuild.
   - [ ] Otherwise, a small Vercel function receives Cloudinary's notifications and triggers the deploy only after X minutes without new uploads.
   - [ ] Fallback: scheduled rebuild (e.g. hourly or nightly) with no Cloudinary hook.
 - [ ] In Cloudinary (Settings → Webhook Notifications), send upload, delete and move events to the hook or function.
+
+## Wrap-up
+
+- [ ] Once everything above is done, delete this TODO.md from the repo.
