@@ -1,24 +1,15 @@
 import { defineCollection } from 'astro:content';
 import { cldAssetsLoader } from 'astro-cloudinary/loaders';
 
+// Every photo in the account; pages group them by their Cloudinary folder (asset_folder).
 export const collections = {
-  hero: defineCollection({
-    loader: cldAssetsLoader({
-      folder: 'hero',
-      context: true
-    })
-  }),
-  test1: defineCollection({
-    loader: cldAssetsLoader({
-      folder: 'test1',
-      context: true
-    })
-  }),
-  all: defineCollection({
+  photos: defineCollection({
     loader: cldAssetsLoader({
       folder: '',
-      context: true
+      context: true,
+      // The loader stops at 10 photos by default. 500 is the most Cloudinary returns per request.
+      // ponytail: caps the whole portfolio at 500 photos; raise it if he ever passes that.
+      limit: 500
     })
-  }),
-
-}
+  })
+};

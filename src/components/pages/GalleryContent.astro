@@ -6,10 +6,14 @@ import { CldImage } from 'astro-cloudinary';
 import { getCldImageUrl } from 'astro-cloudinary/helpers';
 
 const t = getTranslations(Astro.currentLocale);
-const galleries = [
-  { title: 'Test1', photos: await getCollection('test1') },
-  { title: 'Todas', photos: await getCollection('all') }
-];
+// One gallery per Cloudinary folder, named after the folder. Root-level photos, the home page
+// photo and Cloudinary's demo images are left out.
+const hiddenFolders = ['', 'hero', 'samples'];
+const byFolder = Object.groupBy(await getCollection('photos'), ({ data }) => data.asset_folder ?? '');
+const galleries = Object.entries(byFolder)
+  .filter(([folder]) => !hiddenFolders.includes(folder))
+  .sort(([a], [b]) => a.localeCompare(b, 'es'))
+  .map(([folder, photos]) => ({ title: folder.split('/').pop(), photos }));
 ---
 
 <Layout title={`${t.gallery.title} | Vr33s`}>
