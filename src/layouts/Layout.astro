@@ -1,7 +1,9 @@
 ---
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
-import { getLang } from '../i18n/utils';
+import { getLang, getTranslations } from '../i18n/utils';
+import { getHeroPhoto } from '../lib/hero';
+import { getCldImageUrl } from 'astro-cloudinary/helpers';
 import { ThemeScript } from 'astro-theme-toggle';
 
 interface Props {
@@ -10,13 +12,27 @@ interface Props {
 
 const { title } = Astro.props;
 const currentLanguage = getLang(Astro.currentLocale);
+const t = getTranslations(Astro.currentLocale);
+
+// Link preview (WhatsApp, Instagram, etc.): the home photo cropped to the 1200×630 preview size.
+const hero = await getHeroPhoto();
+const previewImage = hero && getCldImageUrl({ src: hero.public_id, width: 1200, height: 630, crop: 'fill', gravity: 'auto' });
 ---
 
 <!doctype html>
 <html lang={currentLanguage}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Vr33s Portfolio" />
+    <meta name="description" content={t.meta.description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Víctor Casabella" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={t.meta.description} />
+    <meta property="og:locale" content={t.meta.locale} />
+    {previewImage && <meta property="og:image" content={previewImage} />}
+    {previewImage && <meta property="og:image:width" content="1200" />}
+    {previewImage && <meta property="og:image:height" content="630" />}
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="viewport" content="width=device-width" />
     <!-- Same logo as the header; the tab colour follows the OS theme, not the site toggle -->
     <link rel="icon" type="image/png" href="/V3redondo-negro.png" media="(prefers-color-scheme: light)" />

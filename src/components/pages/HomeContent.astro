@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getRelativeLocaleUrl } from 'astro:i18n';
-import { getCollection } from 'astro:content';
+import { getHeroPhoto } from '../../lib/hero';
 import { CldImage } from 'astro-cloudinary';
 import { getLang, getTranslations } from '../../i18n/utils';
 
@@ -9,10 +9,7 @@ const lang = getLang(Astro.currentLocale);
 const t = getTranslations(Astro.currentLocale);
 const galleryHref = getRelativeLocaleUrl(lang, '/gallery');
 
-// First photo in the Cloudinary "hero" folder; until that exists, the first photo in any folder
-// (root-level photos are Cloudinary's demo images).
-const photos = (await getCollection('photos')).map(({ data }) => data);
-const hero = photos.find((photo) => photo.asset_folder === 'hero') ?? photos.find((photo) => photo.asset_folder);
+const hero = await getHeroPhoto();
 const caption = hero?.context?.custom?.caption ?? '';
 ---
 

@@ -1,5 +1,9 @@
 export const translations = {
   en: {
+    meta: {
+      description: 'Víctor Casabella, photographer. Galleries, about and contact.',
+      locale: 'en_US'
+    },
     nav: {
       home: 'Home',
       about: 'About',
@@ -53,6 +57,10 @@ export const translations = {
     }
   },
   es: {
+    meta: {
+      description: 'Víctor Casabella, fotógrafo. Galerías, sobre mí y contacto.',
+      locale: 'es_ES'
+    },
     nav: {
       home: 'Inicio',
       about: 'Sobre mí',

@@ -18,7 +18,7 @@
 - [ ] Merge `redesign` into `main`.
 - [ ] Create the Vercel project. Set `PUBLIC_CLOUDINARY_CLOUD_NAME`, `PUBLIC_CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` and `WEB3FORMS_ACCESS_KEY` for Production and Preview.
 - [ ] Custom domain (if any).
-- [ ] Link previews: real meta description and a preview image for WhatsApp/Instagram shares.
+- [ ] Link previews: once the domain is known, set `site` in `astro.config.mjs` and add `og:url`. Test a shared link on WhatsApp.
 
 ## Cloudinary → Vercel auto-deploy
 
