@@ -6,14 +6,14 @@ const t = getTranslations(Astro.currentLocale);
 ---
 
 <Layout title={`${t.about.title} | Vr33s`}>
-  <main>
-    <h1>{t.about.title}</h1>
+  <div class="page">
+    <h1 class="display page-title">{t.about.title}</h1>
     <div class="about-content">
       <img src="https://via.placeholder.com/200" alt="Profile picture" class="profile-pic" />
       <div class="bio">
         <p>{t.about.bio1}</p>
         <p>{t.about.bio2}</p>
-        <h2>{t.about.skills}</h2>
+        <h2 class="label">{t.about.skills}</h2>
         <ul>
           <li>Skill 1</li>
           <li>Skill 2</li>
@@ -22,51 +22,45 @@ const t = getTranslations(Astro.currentLocale);
         </ul>
       </div>
     </div>
-  </main>
+  </div>
 </Layout>
 
 <style>
-  main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-  }
-
-  h1 {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-
   .about-content {
     display: grid;
-    grid-template-columns: 300px 1fr;
-    gap: 2rem;
+    grid-template-columns: minmax(220px, 4fr) 6fr;
+    gap: clamp(2rem, 6vw, 6rem);
     align-items: start;
   }
 
   .profile-pic {
     width: 100%;
-    border-radius: 10px;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    background: var(--surface);
   }
 
   .bio {
-    font-size: 1.1rem;
-    line-height: 1.6;
+    max-width: 60ch;
+    font-size: 1.05rem;
+  }
+
+  .bio p {
+    margin: 0 0 1.25rem;
+  }
+
+  h2 {
+    margin: 3rem 0 1rem;
+    font-weight: 400;
   }
 
   ul {
-    list-style-type: none;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
+    border-top: 1px solid var(--line);
   }
 
   li {
-    padding: 0.5rem 1rem;
-    background-color: var(--nav-bg);
-    border-radius: 5px;
-    text-align: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--line);
   }
 
   @media (max-width: 768px) {
@@ -75,8 +69,7 @@ const t = getTranslations(Astro.currentLocale);
     }
 
     .profile-pic {
-      max-width: 300px;
-      margin: 0 auto;
+      max-width: 360px;
     }
   }
 </style>

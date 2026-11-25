@@ -6,155 +6,127 @@ import { CldImage } from 'astro-cloudinary';
 import { getCldImageUrl } from 'astro-cloudinary/helpers';
 
 const t = getTranslations(Astro.currentLocale);
-const test1 = await getCollection('test1');
-const all = await getCollection('all');
+const galleries = [
+  { title: 'Test1', photos: await getCollection('test1') },
+  { title: 'Todas', photos: await getCollection('all') }
+];
 ---
 
 <Layout title={`${t.gallery.title} | Vr33s`}>
-  <main>
-    <h1>{t.gallery.title}</h1>
+  <div class="page">
+    <h1 class="display page-title">{t.gallery.title}</h1>
     <div id="pswp-gallery">
-      <h2>Test1</h2>
-      <div>
-        <ul class="gallery">{test1.map(({ data: resource }) => {
-          const fullSrc = getCldImageUrl({ src: resource.public_id, width: resource.width, height: resource.height });
-          const alt = resource.context?.custom?.alt ?? '';
-          const caption = resource.context?.custom?.caption ?? alt;
-          return (
-            <li class="gallery-item">
-              <a
-                href={fullSrc}
-                class="pswp-item"
-                data-pswp-width={resource.width}
-                data-pswp-height={resource.height}
-                data-caption={caption}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <CldImage
-                 src={resource.public_id}
-                 width={resource.width}
-                 height={resource.height}
-                 alt={alt}/>
-              </a>
-            </li>
-          )
-        })}</ul>
-      </div>
-      <h2>Todas</h2>
-      <div>
-        <ul class="gallery">{all.map(({ data: resource }) => {
-          const fullSrc = getCldImageUrl({ src: resource.public_id, width: resource.width, height: resource.height });
-          const alt = resource.context?.custom?.alt ?? '';
-          const caption = resource.context?.custom?.caption ?? alt;
-          return (
-            <li class="gallery-item">
-              <a
-                href={fullSrc}
-                class="pswp-item"
-                data-pswp-width={resource.width}
-                data-pswp-height={resource.height}
-                data-caption={caption}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <CldImage
-                 src={resource.public_id}
-                 width={resource.width}
-                 height={resource.height}
-                 alt={alt}/>
-              </a>
-            </li>
-          )
-        })}</ul>
-      </div>
+      {galleries.map(({ title, photos }) => (
+        <section class="gallery-section">
+          <header class="gallery-header">
+            <h2 class="display">{title}</h2>
+            <span class="label">{photos.length} {t.gallery.photos}</span>
+          </header>
+          <ul class="gallery">{photos.map(({ data: resource }) => {
+            const fullSrc = getCldImageUrl({ src: resource.public_id, width: resource.width, height: resource.height });
+            const alt = resource.context?.custom?.alt ?? '';
+            const caption = resource.context?.custom?.caption ?? alt;
+            return (
+              <li class="gallery-item" style={`--r: ${resource.width / resource.height}`}>
+                <a
+                  href={fullSrc}
+                  class="pswp-item"
+                  data-pswp-width={resource.width}
+                  data-pswp-height={resource.height}
+                  data-caption={caption}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <CldImage
+                    src={resource.public_id}
+                    width={resource.width}
+                    height={resource.height}
+                    sizes="(max-width: 600px) 100vw, 50vw"
+                    alt={alt}
+                  />
+                </a>
+              </li>
+            )
+          })}</ul>
+        </section>
+      ))}
     </div>
-  </main>
+  </div>
 </Layout>
 
 <style>
- main {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.gallery {
-  display: grid; /* Use grid layout */
-  grid-template-columns: repeat(4, 1fr); /* 4 items per row */
-  gap: 1rem; /* Space between items */
-  margin-bottom: 3rem; /* Space between galleries */
-}
-
-h2 {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-.gallery-item {
-  position: relative;
-  overflow: hidden;
-  border-radius: 10px;
-}
-
-.gallery-item a {
-  display: block;
-  cursor: pointer;
-}
-
-.overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  padding: 1rem;
-  transform: translateY(100%);
-  transition: transform 0.3s;
-}
-
-.gallery-item:hover .overlay {
-  transform: translateY(0);
-}
-
-h3 {
-  margin: 0;
-  font-size: 1.2rem;
-}
-
-/* Make sure images are responsive */
-.gallery-item img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
-@media (max-width: 1200px) {
-  .gallery {
-    grid-template-columns: repeat(3, 1fr); /* 3 items per row */
+  .gallery-section + .gallery-section {
+    margin-top: clamp(4rem, 10vw, 8rem);
   }
-}
 
-@media (max-width: 800px) {
-  .gallery {
-    grid-template-columns: repeat(2, 1fr); /* 2 items per row */
+  .gallery-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid var(--line);
   }
-}
 
-@media (max-width: 500px) {
-  .gallery {
-    grid-template-columns: 1fr; /* 1 item per row */
+  h2 {
+    margin: 0;
+    font-size: clamp(1rem, 2vw, 1.25rem);
   }
-}
 
+  /* Justified rows: each photo's width follows its aspect ratio (--r), so nothing is cropped
+     and reading order matches the lightbox order. */
+  .gallery {
+    --row: clamp(160px, 22vw, 320px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .gallery::after {
+    content: '';
+    flex-grow: 999;
+  }
+
+  .gallery-item {
+    flex: var(--r) 1 calc(var(--r) * var(--row));
+    background: var(--surface);
+  }
+
+  .gallery-item a {
+    display: block;
+    cursor: zoom-in;
+  }
+
+  .gallery-item :global(img) {
+    width: 100%;
+    height: auto;
+    transition: opacity 0.3s;
+  }
+
+  .gallery:hover .gallery-item :global(img) {
+    opacity: 0.55;
+  }
+
+  .gallery .gallery-item:hover :global(img),
+  .gallery .gallery-item:focus-within :global(img) {
+    opacity: 1;
+  }
+
+  @media (max-width: 600px) {
+    .gallery {
+      --row: 120px;
+      gap: 6px;
+    }
+  }
 </style>
 
+
 <style is:global>
+  .pswp {
+    --pswp-bg: #0a0a0a;
+  }
+
   .pswp__thumbnails-strip {
     position: absolute;
     left: 0;
@@ -166,6 +138,7 @@ h3 {
     padding: 0.6rem 1rem;
     overflow-x: auto;
     background: rgba(0, 0, 0, 0.6);
+    scrollbar-width: none;
   }
 
   .pswp__thumbnail {
@@ -173,8 +146,8 @@ h3 {
     width: 56px;
     height: 56px;
     padding: 0;
-    border: 2px solid transparent;
-    border-radius: 4px;
+    border: 1px solid transparent;
+    border-radius: 0;
     overflow: hidden;
     cursor: pointer;
     background: none;
@@ -218,8 +191,11 @@ h3 {
     padding: 0.6rem 1rem;
     text-align: center;
     color: #fff;
-    background: rgba(0, 0, 0, 0.4);
-    font-size: 0.95rem;
+    background: none;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
   .pswp__custom-caption:empty {
@@ -236,6 +212,7 @@ h3 {
       gallery: galleryEl,
       children: 'a.pswp-item',
       loop: false,
+      bgOpacity: 0.97,
       bgClickAction: 'close',
       // PhotoSwipe's touch tap handler doesn't distinguish image vs background
       // (unlike its mouse click handler, which bgClickAction relies on),

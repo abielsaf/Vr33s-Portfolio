@@ -1,60 +1,161 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getRelativeLocaleUrl } from 'astro:i18n';
+import { getCollection } from 'astro:content';
+import { CldImage } from 'astro-cloudinary';
 import { getLang, getTranslations } from '../../i18n/utils';
 
 const lang = getLang(Astro.currentLocale);
 const t = getTranslations(Astro.currentLocale);
-const aboutHref = getRelativeLocaleUrl(lang, '/about');
 const galleryHref = getRelativeLocaleUrl(lang, '/gallery');
+
+// First photo in the Cloudinary "hero" folder; falls back to the first photo overall.
+const [heroEntry] = await getCollection('hero');
+const [fallbackEntry] = await getCollection('all');
+const hero = (heroEntry ?? fallbackEntry)?.data;
+const caption = hero?.context?.custom?.caption ?? '';
 ---
 
 <Layout title={`${t.home.title} | Vr33s`}>
-  <main>
-    <h1>{t.home.welcome}</h1>
-    <p>{t.home.intro}</p>
-    <div class="cta-buttons">
-      <a href={aboutHref} class="btn">{t.home.aboutButton}</a>
-      <a href={galleryHref} class="btn">{t.home.galleryButton}</a>
+  <section class="hero">
+    <div class="stage">
+      <figure class="frame" style={hero && `--r: ${hero.width / hero.height}`}>
+        {hero && (
+        <CldImage
+          src={hero.public_id}
+          width={hero.width}
+          height={hero.height}
+          sizes="100vw"
+          alt={hero.context?.custom?.alt ?? ''}
+          loading="eager"
+          fetchpriority="high"
+          />
+        )}
+      </figure>
     </div>
-  </main>
+
+    <div class="hero-meta">
+      <div>
+        <h1 class="display">Víctor Casabella</h1>
+        <p class="label">{t.home.intro}</p>
+      </div>
+      {caption && <p class="label caption">{caption}</p>}
+      <a href={galleryHref} class="enter">{t.home.galleryButton} <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
 </Layout>
 
 <style>
-  main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-    text-align: center;
+  .hero {
+    height: calc(100svh - var(--nav-h));
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 0.75rem var(--gutter) 1.5rem;
+  }
+
+  /* The stage is the available space; the frame takes the photo's own aspect ratio (--r)
+     and the largest size that fits, so the photo is never cropped. */
+  .stage {
+    flex: 1;
+    min-height: 0;
+    container-type: size;
+    display: grid;
+    place-items: center;
+  }
+
+  /* Viewfinder: four corner marks drawn just outside the photo */
+  .frame {
+    --r: 3 / 2;
+    position: relative;
+    width: min(100cqw, 100cqh * var(--r));
+    aspect-ratio: var(--r);
+    margin: 0;
+    background: var(--surface);
+  }
+
+  .frame::after {
+    --c: var(--ink);
+    --l: 16px;
+    --w: 1px;
+    content: '';
+    position: absolute;
+    inset: -8px;
+    pointer-events: none;
+    background:
+      linear-gradient(var(--c) 0 0) top left / var(--l) var(--w),
+      linear-gradient(var(--c) 0 0) top left / var(--w) var(--l),
+      linear-gradient(var(--c) 0 0) top right / var(--l) var(--w),
+      linear-gradient(var(--c) 0 0) top right / var(--w) var(--l),
+      linear-gradient(var(--c) 0 0) bottom left / var(--l) var(--w),
+      linear-gradient(var(--c) 0 0) bottom left / var(--w) var(--l),
+      linear-gradient(var(--c) 0 0) bottom right / var(--l) var(--w),
+      linear-gradient(var(--c) 0 0) bottom right / var(--w) var(--l);
+    background-repeat: no-repeat;
+  }
+
+  .frame :global(img) {
+    width: 100%;
+    height: 100%;
+    animation: develop 1.4s ease-out both;
+  }
+
+  @keyframes develop {
+    from { opacity: 0; filter: grayscale(1) brightness(1.15); }
+    to { opacity: 1; filter: none; }
+  }
+
+  .hero-meta {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: end;
+    gap: 2rem;
   }
 
   h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+    margin: 0;
+    font-size: clamp(1.5rem, 4.5vw, 3.25rem);
   }
 
-  p {
-    font-size: 1.25rem;
-    margin-bottom: 2rem;
+  .hero-meta p {
+    margin: 0.5rem 0 0;
   }
 
-  .cta-buttons {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
+  .caption {
+    max-width: 28ch;
+    text-align: right;
   }
 
-  .btn {
-    display: inline-block;
-    padding: 0.8rem 1.5rem;
-    background-color: var(--accent);
-    color: white;
+  .enter {
+    font-size: 0.9rem;
     text-decoration: none;
-    border-radius: 5px;
-    transition: opacity 0.2s;
+    padding-bottom: 2px;
+    border-bottom: 1px solid var(--ink);
+    white-space: nowrap;
   }
 
-  .btn:hover {
-    opacity: 0.9;
+  .enter span {
+    display: inline-block;
+    transition: transform 0.2s;
+  }
+
+  .enter:hover span {
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 768px) {
+    .hero-meta {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .caption {
+      display: none;
+    }
+
+    .enter {
+      justify-self: start;
+    }
   }
 </style>

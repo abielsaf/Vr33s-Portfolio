@@ -49,34 +49,33 @@ const languages: { code: 'es' | 'en'; label: string }[] = [
   .lang-dropdown-toggle {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    background-color: transparent;
+    gap: 0.35rem;
+    height: 36px;
+    padding: 0 0.5rem;
+    background: none;
     border: none;
-    color: var(--text);
+    color: var(--muted);
     cursor: pointer;
-    padding: 0.4rem 0.6rem;
-    border-radius: 5px;
-    transition: background-color 0.2s;
+    transition: color 0.2s;
   }
 
   .lang-dropdown-toggle:hover {
-    background-color: var(--hover-bg);
+    color: var(--ink);
   }
 
   .chevron {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
   }
 
   .lang-dropdown-menu {
     display: none;
     position: absolute;
-    top: calc(100% + 0.4rem);
+    top: calc(100% + 0.25rem);
     right: 0;
-    background-color: var(--nav-bg);
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-    padding: 0.4rem;
-    min-width: 140px;
+    min-width: 150px;
+    padding: 0.35rem;
+    background: var(--bg);
+    border: 1px solid var(--line);
     z-index: 200;
   }
 
@@ -89,18 +88,23 @@ const languages: { code: 'es' | 'en'; label: string }[] = [
     align-items: center;
     gap: 0.6rem;
     padding: 0.5rem 0.6rem;
-    border-radius: 5px;
-    color: var(--text);
+    font-size: 0.85rem;
+    color: var(--muted);
     text-decoration: none;
     white-space: nowrap;
   }
 
-  .lang-option:hover {
-    background-color: var(--hover-bg);
+  .lang-option:hover,
+  .lang-option.active {
+    color: var(--ink);
+    background: var(--surface);
   }
 
-  .lang-option.active {
-    font-weight: bold;
+  @media (max-width: 768px) {
+    .lang-dropdown-menu {
+      left: 0;
+      right: auto;
+    }
   }
 </style>
 

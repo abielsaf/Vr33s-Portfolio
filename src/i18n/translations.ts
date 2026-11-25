@@ -8,9 +8,7 @@ export const translations = {
     },
     home: {
       title: 'Home',
-      welcome: 'Welcome to My Portfolio',
-      intro: "Hi! I'm a creative professional passionate about my work.",
-      aboutButton: 'About Me',
+      intro: 'Photography',
       galleryButton: 'View Galleries'
     },
     about: {
@@ -20,7 +18,8 @@ export const translations = {
       skills: 'Skills'
     },
     gallery: {
-      title: 'Photo Galleries'
+      title: 'Galleries',
+      photos: 'photos'
     },
     contact: {
       title: 'Contact Me',
@@ -46,9 +45,7 @@ export const translations = {
     },
     home: {
       title: 'Inicio',
-      welcome: 'Bienvenido a Mi Portafolio',
-      intro: "¡Hola! Soy un profesional creativo apasionado por mi trabajo.",
-      aboutButton: 'Sobre Mí',
+      intro: 'Fotografía',
       galleryButton: 'Ver Galerías'
     },
     about: {
@@ -58,7 +55,8 @@ export const translations = {
       skills: 'Habilidades'
     },
     gallery: {
-      title: 'Galerías de Fotos'
+      title: 'Galerías',
+      photos: 'fotos'
     },
     contact: {
       title: 'Contacto',

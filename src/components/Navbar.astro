@@ -7,192 +7,177 @@ import { getLang, getTranslations } from '../i18n/utils';
 const lang = getLang(Astro.currentLocale);
 const t = getTranslations(Astro.currentLocale);
 
+const links = [
+  { href: getRelativeLocaleUrl(lang, '/gallery'), label: t.nav.gallery },
+  { href: getRelativeLocaleUrl(lang, '/about'), label: t.nav.about },
+  { href: getRelativeLocaleUrl(lang, '/contact'), label: t.nav.contact }
+];
 const homeHref = getRelativeLocaleUrl(lang, '/');
-const aboutHref = getRelativeLocaleUrl(lang, '/about');
-const galleryHref = getRelativeLocaleUrl(lang, '/gallery');
-const contactHref = getRelativeLocaleUrl(lang, '/contact');
+const current = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
-<nav class="nav-container">
-  <div class="nav-content">
-    <a href={homeHref} class="site-title">
-      <img id="logo" src="/V3redondo.png" alt="Víctor Casabella Logo" class="logo" />
-      <>Víctor Casabella</>
-    </a>
-    <button class="mobile-menu-toggle" aria-label="Toggle Menu">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </button>
-    <div class="nav-links">
-      <a href={homeHref}>{t.nav.home}</a>
-      <a href={aboutHref}>{t.nav.about}</a>
-      <a href={galleryHref}>{t.nav.gallery}</a>
-      <a href={contactHref}>{t.nav.contact}</a>
+<nav class="nav">
+  <a href={homeHref} class="site-title" aria-label={t.nav.home}>
+    <img src="/V3redondo-negro.png" alt="" class="logo logo-light" />
+    <img src="/V3redondo.png" alt="" class="logo logo-dark" />
+    <span class="name">Víctor Casabella</span>
+  </a>
+
+  <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-links">
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </button>
+
+  <div id="nav-links" class="nav-links">
+    {links.map(({ href, label }) => (
+      <a href={href} aria-current={current === href.replace(/\/$/, '') ? 'page' : undefined}>{label}</a>
+    ))}
+    <span class="controls">
       <LangToggle />
       <ThemeToggle />
-    </div>
+    </span>
   </div>
 </nav>
 
 <style>
-  .nav-container {
-    background-color: var(--nav-bg);
-    padding: 1rem;
+  .nav {
     position: sticky;
     top: 0;
     z-index: 100;
-  }
-
-  .nav-content {
-    max-width: 1200px;
-    margin: 0 auto;
+    height: var(--nav-h);
+    padding: 0 var(--gutter);
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center; /* Center items vertically */
+    background: var(--bg);
+    transition: background-color 0.3s;
   }
 
   .site-title {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.75rem;
     text-decoration: none;
-    color: var(--text);
   }
 
   .logo {
-    width: 50px;
+    width: 32px;
     height: auto;
+  }
+
+  .logo-dark,
+  :global(.dark) .logo-light {
+    display: none;
+  }
+
+  :global(.dark) .logo-dark {
+    display: block;
+  }
+
+  .name {
+    font-stretch: 125%;
+    font-weight: 400;
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
   }
 
   .nav-links {
     display: flex;
-    gap: 2rem;
     align-items: center;
+    gap: clamp(1.25rem, 3vw, 2.5rem);
   }
 
-  .nav-links a {
-    color: var(--text);
+  .nav-links > a {
+    font-size: 0.85rem;
     text-decoration: none;
+    color: var(--muted);
     transition: color 0.2s;
   }
 
-  .nav-links a:hover {
-    color: var(--accent);
+  .nav-links > a:hover,
+  .nav-links > a[aria-current='page'] {
+    color: var(--ink);
   }
 
-  /* Mobile Menu Toggle */
-  .mobile-menu-toggle {
-    display: none; /* Hidden by default */
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .menu-toggle {
+    display: none;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    width: 30px;
-    height: 30px;
-    background: transparent;
+    gap: 6px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background: none;
     border: none;
     cursor: pointer;
-    transition: transform 0.3s ease; /* Smooth transformation */
   }
 
   .bar {
-    height: 3px;
+    height: 1px;
     width: 100%;
-    background-color: var(--text);
-    transition: 0.3s;
-    margin: 4px 0;  /* Adds vertical space between each bar */
+    background: var(--ink);
+    transition: transform 0.25s;
   }
 
-  /* Mobile Menu Button Active State */
-  .mobile-menu-toggle.active .bar:nth-child(1) {
-    transform: translateY(8px) rotate(45deg);
+  .menu-toggle.active .bar:nth-child(1) {
+    transform: translateY(3.5px) rotate(45deg);
   }
 
-  .mobile-menu-toggle.active .bar:nth-child(2) {
-    opacity: 0;
-  }
-
-  .mobile-menu-toggle.active .bar:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
+  .menu-toggle.active .bar:nth-child(2) {
+    transform: translateY(-3.5px) rotate(-45deg);
   }
 
   @media (max-width: 768px) {
-    .nav-content {
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
-    }
-
-    .logo {
-      width: 40px; /* Smaller logo size for smaller screens */
+    .menu-toggle {
+      display: flex;
     }
 
     .nav-links {
       display: none;
-      flex-direction: column;
-      gap: 1rem;
       position: absolute;
+      top: var(--nav-h);
+      left: 0;
       right: 0;
-      background-color: var(--nav-bg);
-      padding: 1rem;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      width: 200px;
-      z-index: 50;
-      top: 100%;
-      max-height: 300px;
-      overflow-y: auto;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.25rem;
+      padding: 1.5rem var(--gutter) 2rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
     }
 
     .nav-links.active {
       display: flex;
     }
 
-    .mobile-menu-toggle {
-      display: flex;
-      margin-left: auto;
+    .nav-links > a {
+      font-size: 1.1rem;
+      color: var(--ink);
     }
   }
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const toggleButton = document.querySelector('.mobile-menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
+  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const links = document.querySelector<HTMLElement>('.nav-links');
 
-    // Toggle dropdown on button click
-    toggleButton.addEventListener('click', () => {
-      toggleButton.classList.toggle('active'); // Toggle active class on the button
-      navLinks.classList.toggle('active');      // Toggle active class on the menu
-    });
+  const setOpen = (open: boolean) => {
+    toggle?.classList.toggle('active', open);
+    links?.classList.toggle('active', open);
+    toggle?.setAttribute('aria-expanded', String(open));
+  };
 
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (event) => {
-      if (!toggleButton.contains(event.target) && !navLinks.contains(event.target)) {
-        navLinks.classList.remove('active');
-        toggleButton.classList.remove('active');
-      }
-    });
-  });
-</script>
+  toggle?.addEventListener('click', () => setOpen(!links?.classList.contains('active')));
 
-<script>
-  // Function to update the logo based on the current theme
-  function updateLogo() {
-    const logo = document.getElementById('logo');
-    const isDarkMode = document.documentElement.classList.contains('dark'); 
-
-    if (isDarkMode) {
-      logo.src = '/V3redondo.png'; // Light logo for dark theme
-    } else {
-      logo.src = '/V3redondo-negro.png'; // Dark logo for light theme
-    }
-  }
-
-  // Initial call on page load
-  document.addEventListener('DOMContentLoaded', updateLogo);
-
-  // Re-run the update function when the theme toggle button is clicked
-  document.getElementById('theme-toggle').addEventListener('click', () => {
-    setTimeout(updateLogo, 10);
+  document.addEventListener('click', (event) => {
+    const target = event.target as Node;
+    if (!toggle?.contains(target) && !links?.contains(target)) setOpen(false);
   });
 </script>

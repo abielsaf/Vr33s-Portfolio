@@ -2,6 +2,12 @@ import { defineCollection } from 'astro:content';
 import { cldAssetsLoader } from 'astro-cloudinary/loaders';
 
 export const collections = {
+  hero: defineCollection({
+    loader: cldAssetsLoader({
+      folder: 'hero',
+      context: true
+    })
+  }),
   test1: defineCollection({
     loader: cldAssetsLoader({
       folder: 'test1',
