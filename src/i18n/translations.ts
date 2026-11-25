@@ -30,6 +30,7 @@ export const translations = {
     },
     gallery: {
       title: 'Galleries',
+      photo: 'photo',
       photos: 'photos'
     },
     contact: {
@@ -81,6 +82,7 @@ export const translations = {
     },
     gallery: {
       title: 'Galerías',
+      photo: 'foto',
       photos: 'fotos'
     },
     contact: {

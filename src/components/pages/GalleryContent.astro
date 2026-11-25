@@ -32,7 +32,7 @@ const galleries = Object.entries(byFolder)
         <section class="gallery-section">
           <header class="gallery-header">
             <h2 class="display">{title}</h2>
-            <span class="label">{photos.length} {t.gallery.photos}</span>
+            <span class="label">{photos.length} {photos.length === 1 ? t.gallery.photo : t.gallery.photos}</span>
           </header>
           <ul class="gallery">{photos.map(({ data: resource }) => {
             const fullSrc = getCldImageUrl({ src: resource.public_id, width: resource.width, height: resource.height });
