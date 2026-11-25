@@ -1,15 +1,31 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { CldImage } from 'astro-cloudinary';
 import { getTranslations } from '../../i18n/utils';
 
 const t = getTranslations(Astro.currentLocale);
+
+// First photo in the Cloudinary "profile" folder; an empty frame keeps the layout until one exists.
+const portrait = (await getCollection('photos')).find(({ data }) => data.asset_folder === 'profile')?.data;
 ---
 
 <Layout title={`${t.about.title} | Vr33s`}>
   <div class="page">
     <h1 class="display page-title">{t.about.title}</h1>
     <div class="about-content">
-      <img src="https://via.placeholder.com/200" alt="Profile picture" class="profile-pic" />
+      {portrait ? (
+        <CldImage
+          src={portrait.public_id}
+          width={portrait.width}
+          height={portrait.height}
+          sizes="(max-width: 768px) 360px, 40vw"
+          alt={t.about.portraitAlt}
+          class="profile-pic"
+        />
+      ) : (
+        <div class="profile-pic" aria-hidden="true"></div>
+      )}
       <div class="bio">
         <p>{t.about.bio1}</p>
         <p>{t.about.bio2}</p>

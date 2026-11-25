@@ -2,7 +2,7 @@
 
 ## Content (from Víctor)
 
-- [ ] **About page**: bio in Spanish and English, skills list (currently "Skill 1–4") and a portrait photo (current one is a broken placeholder).
+- [ ] **About page**: bio in Spanish and English, skills list (currently "Skill 1–4"), and a portrait photo in the Cloudinary `profile` folder.
 - [ ] **Home photo**: put the chosen photo in the Cloudinary `hero` folder. Check it on a phone and a laptop.
 - [ ] **Web3Forms key**: add `WEB3FORMS_ACCESS_KEY` to `.env`, then send a test message from the contact page.
 - [ ] **Alt text and captions** (optional): add contextual metadata keys `alt` and `caption` to photos in Cloudinary.

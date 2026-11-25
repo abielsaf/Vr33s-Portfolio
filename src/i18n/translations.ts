@@ -24,6 +24,7 @@ export const translations = {
     },
     about: {
       title: 'About Me',
+      portraitAlt: 'Portrait of Víctor Casabella',
       bio1: "Hello! I'm a passionate creator with experience in various creative fields.",
       bio2: "I love bringing ideas to life and creating meaningful experiences through my work.",
       skills: 'Skills'
@@ -76,6 +77,7 @@ export const translations = {
     },
     about: {
       title: 'Sobre mí',
+      portraitAlt: 'Retrato de Víctor Casabella',
       bio1: "¡Hola! Soy un creador apasionado con experiencia en varios campos creativos.",
       bio2: "Me encanta dar vida a las ideas y crear experiencias significativas a través de mi trabajo.",
       skills: 'Habilidades'
