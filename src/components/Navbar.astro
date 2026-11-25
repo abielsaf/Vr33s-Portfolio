@@ -23,7 +23,7 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
     <span class="name">Víctor Casabella</span>
   </a>
 
-  <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-links">
+  <button class="menu-toggle" aria-label={t.a11y.menu} aria-expanded="false" aria-controls="nav-links">
     <span class="bar"></span>
     <span class="bar"></span>
   </button>

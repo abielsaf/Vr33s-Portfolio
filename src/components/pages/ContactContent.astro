@@ -31,7 +31,7 @@ const apiKey = import.meta.env.WEB3FORMS_ACCESS_KEY;
       <form id="form" class="contact-form" method="POST">
         <input type="hidden" name="access_key" value={apiKey} />
         <input type="hidden" name="from_name" value="Potencial cliente">
-        <input type="hidden" name="subject" value="Nuevo correo de Vr33s.photo (O como se llame la web)">
+        <input type="hidden" name="subject" value="Nuevo mensaje desde la web de Vr33s">
         <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
 
         <div class="form-group">
@@ -50,7 +50,7 @@ const apiKey = import.meta.env.WEB3FORMS_ACCESS_KEY;
         </div>
        <!--  <div class="h-captcha" data-captcha="true"></div> hCaptcha, necesita script-->
         <button type="submit" class="submit-btn">{t.contact.form.send}</button>
-        <div id="result" class="form-result"></div>
+        <div id="result" class="form-result" data-sending={t.contact.form.sending} data-sent={t.contact.form.sent} data-error={t.contact.form.error}></div>
       </form>
     </div>
   </div>
@@ -184,7 +184,8 @@ const apiKey = import.meta.env.WEB3FORMS_ACCESS_KEY;
     const object = Object.fromEntries(formData);
     const json = JSON.stringify(object);
 
-    result.innerHTML = "Please wait...";
+    result.style.display = "";
+    result.textContent = result.dataset.sending;
 
     fetch('https://api.web3forms.com/submit', {
       method: 'POST',
@@ -194,21 +195,20 @@ const apiKey = import.meta.env.WEB3FORMS_ACCESS_KEY;
       },
       body: json
     })
-    .then(async (response) => {
-      const jsonResponse = await response.json();
+    .then((response) => {
       if (response.ok) {
-        result.innerHTML = jsonResponse.message;
+        result.textContent = result.dataset.sent;
+        form.reset();
       } else {
         console.error(response);
-        result.innerHTML = "Error: " + jsonResponse.message;
+        result.textContent = result.dataset.error;
       }
     })
     .catch(error => {
       console.error(error);
-      result.innerHTML = "Something went wrong!";
+      result.textContent = result.dataset.error;
     })
     .finally(() => {
-      form.reset();
       setTimeout(() => {
         result.style.display = "none";
       }, 3000);

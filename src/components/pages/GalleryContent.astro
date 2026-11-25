@@ -15,7 +15,15 @@ const galleries = [
 <Layout title={`${t.gallery.title} | Vr33s`}>
   <div class="page">
     <h1 class="display page-title">{t.gallery.title}</h1>
-    <div id="pswp-gallery">
+    <div
+      id="pswp-gallery"
+      data-close={t.a11y.close}
+      data-zoom={t.a11y.zoom}
+      data-previous={t.a11y.previous}
+      data-next={t.a11y.next}
+      data-go-to={t.a11y.goTo}
+      data-load-error={t.a11y.loadError}
+    >
       {galleries.map(({ title, photos }) => (
         <section class="gallery-section">
           <header class="gallery-header">
@@ -207,11 +215,18 @@ const galleries = [
   import PhotoSwipeLightbox from 'photoswipe/lightbox';
   import 'photoswipe/style.css';
 
+  const labels = document.getElementById('pswp-gallery')?.dataset ?? {};
+
   document.querySelectorAll('#pswp-gallery .gallery').forEach((galleryEl) => {
     const lightbox = new PhotoSwipeLightbox({
       gallery: galleryEl,
       children: 'a.pswp-item',
       loop: false,
+      closeTitle: labels.close,
+      zoomTitle: labels.zoom,
+      arrowPrevTitle: labels.previous,
+      arrowNextTitle: labels.next,
+      errorMsg: labels.loadError,
       bgOpacity: 0.97,
       bgClickAction: 'close',
       // PhotoSwipe's touch tap handler doesn't distinguish image vs background
@@ -248,7 +263,7 @@ const galleries = [
             const thumbButton = document.createElement('button');
             thumbButton.type = 'button';
             thumbButton.className = 'pswp__thumbnail';
-            thumbButton.setAttribute('aria-label', `Go to image ${index + 1}`);
+            thumbButton.setAttribute('aria-label', `${labels.goTo} ${index + 1}`);
 
             const img = document.createElement('img');
             img.src = thumbImg.src;
